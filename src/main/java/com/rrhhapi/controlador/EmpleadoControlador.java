@@ -1,0 +1,69 @@
+package com.rrhhapi.controlador;
+
+import com.rrhhapi.excepcion.RecursoNoEncontradoExcepcion;
+import com.rrhhapi.modelo.Empleado;
+import com.rrhhapi.servicio.IEmpleadoServicio;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("api/v1/rrhh")
+@CrossOrigin(value = "http://localhost:3000")
+public class EmpleadoControlador {
+    private static final Logger logger =
+            LoggerFactory.getLogger(EmpleadoControlador.class);
+
+    @Autowired
+    private IEmpleadoServicio empleadoServicio;
+
+    @GetMapping("/empleados")
+    public List<Empleado> listar() {
+        return empleadoServicio.listar();
+    }
+
+    @PostMapping("/empleados")
+    public Empleado agregar(@RequestBody Empleado empleado) {
+        return empleadoServicio.guardar(empleado);
+    }
+
+    @GetMapping("/empleados/{id}")
+    public ResponseEntity<Empleado> buscarPorId(@PathVariable Integer id) {
+        Empleado empleado = empleadoServicio.buscarPorId(id);
+        if (empleado == null) {
+            throw new RecursoNoEncontradoExcepcion("No se encontro el empleado con el id: " + id);
+        }
+        return ResponseEntity.ok(empleado);
+    }
+
+    @PutMapping("/empleados/{id}")
+    public ResponseEntity<Empleado> actualizar(@PathVariable Integer id, @RequestBody Empleado empleado) {
+        Empleado empleado = empleadoServicio.buscarPorId(id);
+        if (empleado == null) {
+            throw new RecursoNoEncontradoExcepcion("No se encontro el empleado con el id: " + id);
+        }
+        empleado.setNombre(empleado.getNombre());
+        empleado.setDepartamento(empleado.getDepartamento());
+        empleado.setSueldo(empleado.getSueldo());
+        empleadoServicio.guardar(empleado);
+        return ResponseEntity.ok(empleado);
+    }
+
+    @DeleteMapping("/empleados/{id}")
+    public ResponseEntity<Map<String, Boolean>> eliminar(@PathVariable Integer id) {
+        Empleado empleado = empleadoServicio.buscarPorId(id);
+        if (empleado == null) {
+            throw new RecursoNoEncontradoExcepcion("No se encontro el empleado con el id: " + id);
+        }
+        empleadoServicio.eliminar(empleado);
+        Map<String, Boolean> respuesta = new HashMap<>();
+        respuesta.put("eliminado", Boolean.TRUE);
+        return ResponseEntity.ok(respuesta);
+    }
+}
