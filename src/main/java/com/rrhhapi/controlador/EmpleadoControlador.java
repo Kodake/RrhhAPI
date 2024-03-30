@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/rrhh")
-@CrossOrigin(value = "http://localhost:3000")
+@CrossOrigin(value = "http://localhost:5173")
 public class EmpleadoControlador {
     private static final Logger logger =
             LoggerFactory.getLogger(EmpleadoControlador.class);
@@ -43,16 +43,16 @@ public class EmpleadoControlador {
     }
 
     @PutMapping("/empleados/{id}")
-    public ResponseEntity<Empleado> actualizar(@PathVariable Integer id, @RequestBody Empleado empleado) {
-        Empleado empleado = empleadoServicio.buscarPorId(id);
-        if (empleado == null) {
+    public ResponseEntity<Empleado> actualizar(@PathVariable Integer id, @RequestBody Empleado empleadoActualizado) {
+        Empleado empleadoExistente = empleadoServicio.buscarPorId(id);
+        if (empleadoExistente == null) {
             throw new RecursoNoEncontradoExcepcion("No se encontro el empleado con el id: " + id);
         }
-        empleado.setNombre(empleado.getNombre());
-        empleado.setDepartamento(empleado.getDepartamento());
-        empleado.setSueldo(empleado.getSueldo());
-        empleadoServicio.guardar(empleado);
-        return ResponseEntity.ok(empleado);
+        empleadoExistente.setNombre(empleadoActualizado.getNombre());
+        empleadoExistente.setDepartamento(empleadoActualizado.getDepartamento());
+        empleadoExistente.setSueldo(empleadoActualizado.getSueldo());
+        empleadoServicio.guardar(empleadoExistente);
+        return ResponseEntity.ok(empleadoExistente);
     }
 
     @DeleteMapping("/empleados/{id}")
