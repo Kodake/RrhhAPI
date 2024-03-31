@@ -3,6 +3,9 @@ package com.rrhhapi.servicio;
 import com.rrhhapi.modelo.Empleado;
 import com.rrhhapi.repositorio.IEmpleadoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,11 @@ public class EmpleadoServicio implements IEmpleadoServicio {
     @Override
     public List<Empleado> listar() {
         return empleadoRepositorio.findAll();
+    }
+
+    @Override
+    public Page<Empleado> listarPaginado(Pageable pageable) {
+        return empleadoRepositorio.findAll(pageable);
     }
 
     @Override
