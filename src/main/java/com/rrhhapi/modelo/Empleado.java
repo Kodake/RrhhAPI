@@ -19,5 +19,7 @@ public class Empleado {
     @ManyToOne
     @JoinColumn(name = "id_departamento")
     private Departamento departamento;
-    Double sueldo;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_sueldo", referencedColumnName = "idSueldo")
+    private Sueldo sueldo;
 }

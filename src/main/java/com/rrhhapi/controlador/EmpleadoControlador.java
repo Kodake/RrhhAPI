@@ -2,6 +2,7 @@ package com.rrhhapi.controlador;
 
 import com.rrhhapi.excepcion.RecursoNoEncontradoExcepcion;
 import com.rrhhapi.modelo.Empleado;
+import com.rrhhapi.modelo.Sueldo;
 import com.rrhhapi.servicio.IEmpleadoServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +40,11 @@ public class EmpleadoControlador {
     }
 
     @PostMapping("/empleados")
-    public Empleado agregar(@RequestBody Empleado empleado) {
-        return empleadoServicio.guardar(empleado);
+    public ResponseEntity<Empleado> agregar(@RequestBody Empleado empleado) {
+        Empleado empleadoNuevo = empleadoServicio.guardar(empleado);
+        Sueldo sueldo = new Sueldo();
+        sueldo.setCantidad(empleadoNuevo.getSueldo().getCantidad());
+        return ResponseEntity.ok(empleadoNuevo);
     }
 
     @GetMapping("/empleados/{id}")
@@ -60,8 +64,9 @@ public class EmpleadoControlador {
         }
         empleadoExistente.setNombre(empleadoActualizado.getNombre());
         empleadoExistente.setDepartamento(empleadoActualizado.getDepartamento());
-        empleadoExistente.setSueldo(empleadoActualizado.getSueldo());
-        empleadoServicio.guardar(empleadoExistente);
+        Empleado empleadoNuevo = empleadoServicio.guardar(empleadoExistente);
+        Sueldo sueldo = new Sueldo();
+        sueldo.setCantidad(empleadoActualizado.getSueldo().getCantidad());
         return ResponseEntity.ok(empleadoExistente);
     }
 
