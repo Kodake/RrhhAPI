@@ -1,7 +1,6 @@
 package com.rrhhapi.servicio;
 
 import com.rrhhapi.modelo.Departamento;
-import com.rrhhapi.modelo.Empleado;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

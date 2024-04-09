@@ -2,7 +2,6 @@ package com.rrhhapi.servicio;
 
 import com.rrhhapi.modelo.Departamento;
 import com.rrhhapi.repositorio.IDepartamentoRepositorio;
-import com.rrhhapi.repositorio.IEmpleadoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

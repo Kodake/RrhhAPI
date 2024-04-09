@@ -34,17 +34,9 @@ public class EmpleadoControlador {
 
     @GetMapping("/empleados")
     public Page<Empleado> listarPaginado(@RequestParam(defaultValue = "1") int page,
-                                 @RequestParam(defaultValue = "5") int size) {
+                                         @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return empleadoServicio.listarPaginado(pageable);
-    }
-
-    @PostMapping("/empleados")
-    public ResponseEntity<Empleado> agregar(@RequestBody Empleado empleado) {
-        Empleado empleadoNuevo = empleadoServicio.guardar(empleado);
-        Sueldo sueldo = new Sueldo();
-        sueldo.setCantidad(empleadoNuevo.getSueldo().getCantidad());
-        return ResponseEntity.ok(empleadoNuevo);
     }
 
     @GetMapping("/empleados/{id}")
@@ -56,17 +48,32 @@ public class EmpleadoControlador {
         return ResponseEntity.ok(empleado);
     }
 
+    @PostMapping("/empleados")
+    public ResponseEntity<Empleado> agregar(@RequestBody Empleado empleado) {
+        Empleado empleadoNuevo = empleadoServicio.guardar(empleado);
+        return ResponseEntity.ok(empleadoNuevo);
+    }
+
     @PutMapping("/empleados/{id}")
     public ResponseEntity<Empleado> actualizar(@PathVariable Integer id, @RequestBody Empleado empleadoActualizado) {
         Empleado empleadoExistente = empleadoServicio.buscarPorId(id);
         if (empleadoExistente == null) {
-            throw new RecursoNoEncontradoExcepcion("No se encontro el empleado con el id: " + id);
+            throw new RecursoNoEncontradoExcepcion("No se encontró el empleado con el id: " + id);
         }
         empleadoExistente.setNombre(empleadoActualizado.getNombre());
         empleadoExistente.setDepartamento(empleadoActualizado.getDepartamento());
-        Empleado empleadoNuevo = empleadoServicio.guardar(empleadoExistente);
-        Sueldo sueldo = new Sueldo();
-        sueldo.setCantidad(empleadoActualizado.getSueldo().getCantidad());
+
+        Sueldo sueldoActualizado = empleadoActualizado.getSueldo();
+        if (sueldoActualizado != null) {
+            Sueldo sueldoExistente = empleadoExistente.getSueldo();
+            if (sueldoExistente == null) {
+                sueldoExistente = new Sueldo();
+                empleadoExistente.setSueldo(sueldoExistente);
+            }
+            sueldoExistente.setCantidad(sueldoActualizado.getCantidad());
+        }
+
+        empleadoServicio.guardar(empleadoExistente);
         return ResponseEntity.ok(empleadoExistente);
     }
 
