@@ -37,10 +37,6 @@ public class EmpleadoServicio implements IEmpleadoServicio {
     @Override
     public Empleado guardar(Empleado empleado) {
         return empleadoRepositorio.save(empleado);
-//        Sueldo sueldo = new Sueldo();
-//        sueldo.setCantidad(savedEmpleado.getSueldo().getCantidad());
-
-//        return savedEmpleado;
     }
 
     @Override
