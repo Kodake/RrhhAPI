@@ -32,9 +32,9 @@ public class DepartamentoControlador {
     }
 
     @GetMapping("/departamentos")
-    public Page<Departamento> listarPaginado(@RequestParam(defaultValue = "1") int page,
-                                             @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Departamento> listarPaginado(@RequestParam(defaultValue = "0") int pageNumber,
+                                             @RequestParam(defaultValue = "5") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return departamentoServicio.listarPaginado(pageable);
     }
 

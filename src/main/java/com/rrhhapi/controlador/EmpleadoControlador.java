@@ -52,9 +52,9 @@ public class EmpleadoControlador {
     }
 
     @GetMapping("/empleados")
-    public Page<GetEmpleadoDTO> listarPaginado(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<GetEmpleadoDTO> listarPaginado(@RequestParam(defaultValue = "0") int pageNumber,
+                                               @RequestParam(defaultValue = "5") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Empleado> empleadosPage = empleadoServicio.listarPaginado(pageable);
 
         Page<GetEmpleadoDTO> empleadoDTOPage = empleadosPage.map(empleado -> {
