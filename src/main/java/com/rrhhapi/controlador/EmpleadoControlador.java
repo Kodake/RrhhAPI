@@ -68,17 +68,17 @@ public class EmpleadoControlador {
     }
 
     @GetMapping("/empleados/{id}")
-    public ResponseEntity<GetEmpleadoDTO> buscarPorId(@PathVariable Integer id) {
+    public ResponseEntity<EmpleadoDTO> buscarPorId(@PathVariable Integer id) {
         Empleado empleado = empleadoServicio.buscarPorId(id);
         if (empleado == null) {
             throw new RecursoNoEncontradoExcepcion("No se encontró el empleado con el id: " + id);
         }
 
-        GetEmpleadoDTO getEmpleadoDTO = modelMapper.map(empleado, GetEmpleadoDTO.class);
-        getEmpleadoDTO.setSueldo(empleado.getSueldo().getCantidad());
-        getEmpleadoDTO.setDepartamento(empleado.getDepartamento().getNombre());
+        EmpleadoDTO empleadoDTO = modelMapper.map(empleado, EmpleadoDTO.class);
+        empleadoDTO.setSueldo(empleado.getSueldo().getCantidad());
+        empleadoDTO.setDepartamento(empleado.getDepartamento().getIdDepartamento());
 
-        return ResponseEntity.ok(getEmpleadoDTO);
+        return ResponseEntity.ok(empleadoDTO);
     }
 
     @PostMapping("/empleados")
