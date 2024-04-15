@@ -2,11 +2,7 @@ package com.rrhhapi.controlador;
 
 import com.rrhhapi.excepcion.RecursoNoEncontradoExcepcion;
 import com.rrhhapi.modelo.Departamento;
-import com.rrhhapi.modelo.Empleado;
 import com.rrhhapi.servicio.IDepartamentoServicio;
-import com.rrhhapi.servicio.IEmpleadoServicio;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +16,6 @@ import java.util.List;
 @RequestMapping("api/v1/rrhh")
 @CrossOrigin(value = "http://localhost:5173")
 public class DepartamentoControlador {
-    private static final Logger logger =
-            LoggerFactory.getLogger(EmpleadoControlador.class);
-
     @Autowired
     private IDepartamentoServicio departamentoServicio;
 
